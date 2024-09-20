@@ -1,0 +1,11 @@
+.homeContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    /* background: linear-gradient(to left,
+    rgb(191, 197, 191) 0%,
+    rgb(17, 63, 19) 100%); */
+}
