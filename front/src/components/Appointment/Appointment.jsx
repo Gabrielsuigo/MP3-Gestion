@@ -21,7 +21,7 @@ try {
       <p>{time}</p>
       <p>{description}</p>
       <p>{status?.toUpperCase()}</p>
-      <button disabled ={ status === "canceled"} onClick={() => cancelAppointment()}>Cancelar</button>
+      <button disabled ={ status === "cancelled"} onClick={() => cancelAppointment()}>Cancelar</button>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { validateRegister } from "../../helpers/validate";
 import axios from "axios";
@@ -8,7 +9,7 @@ const register = () => {
     name: "",
     email: "",
     birthdate: "",
-    nDNI: "",
+    nDni: "",
     username: "",
     password: "",
   };

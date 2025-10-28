@@ -17,9 +17,9 @@ export const userSlice = createSlice({
     },
 
     cancelAppointmentAction: (state, action) => {
-      state.userAppointment = state.userAppointment.map((appointment) => {
+      state.userAppointment = state.userAppointment.map(appointment => {
         if (appointment.id === action.payload) {
-          return { ...appointment, state: "cancelled" };
+          return {...appointment, status: "cancelled" };
         }
         return appointment;
       });
@@ -27,6 +27,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { addUser, addUserAppointments, cancelAppointmentAction } =
-  userSlice.actions;
-export default userSlice.reducer;
+export const { addUser, addUserAppointments, cancelAppointmentAction } = userSlice.actions;
+// export default userSlice.reducer;

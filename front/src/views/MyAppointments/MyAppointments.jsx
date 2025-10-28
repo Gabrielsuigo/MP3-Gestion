@@ -8,9 +8,7 @@ import { addUserAppointments } from "../../redux/reducer";
 
 const MyAppointments = () => {
   const navigate = useNavigate();
-  // const [userAppointments, setAppointments] = useState([]);
-  // const [estado, establecer estado] = useState (valor inicial)
-  // const [STATE, SETSTATE] = useState (INITIALVALUE)
+
   const userData = useSelector((state) => state.userActive);
   const userAppointments = useSelector((state) => state.userAppointment);
   const dispatch = useDispatch();
@@ -32,19 +30,7 @@ const MyAppointments = () => {
     !userData.name ? navigate("/") : fetchData();
   }, []);
 
-  // // ACTUALIZACIÓN
-  // useEffect(() => {
 
-  // }, [userAppointments])
-
-  // // DESMONTAJE
-  // useEffect(() => {
-
-  //   return() =>{
-
-  //   }
-
-  // }, [])
 
   return (
     <div className={style.container}>
@@ -57,8 +43,8 @@ const MyAppointments = () => {
             <div className={style.container}>
               <Appointment
                 key={id}
-                date={date}
                 time={time}
+                date={date}
                 status={status}
                 id={id}
                 description={description}
