@@ -1,10 +1,9 @@
-
 import React, { useEffect, useState } from "react";
 import { validateRegister } from "../../helpers/validate";
 import axios from "axios";
-import styles from "./register.module.css";
+import styles from "./Register.module.css";
 
-const register = () => {
+const Register = () => {
   const initialState = {
     name: "",
     email: "",
@@ -13,99 +12,91 @@ const register = () => {
     username: "",
     password: "",
   };
-  const [form, setform] = useState(initialState);
+
+  const [form, setForm] = useState(initialState);
   const [errors, setErrors] = useState(initialState);
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    const errors = validateRegister(form);
-    setErrors(errors);
+    const newErrors = validateRegister(form);
+    setErrors(newErrors);
   }, [form]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setform({ ...form, [name]: value });
+    setForm({ ...form, [name]: value });
   };
 
   const postData = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:3000/users/register",
-        form
-      );
+      const response = await axios.post("http://localhost:3000/users/register", form);
+
       if (response.status === 201) {
-        alert("Usuario registrado con Éxito");
+        setSuccess("✅ Usuario registrado con éxito");
+        setForm(initialState);
       } else {
-        alert("Falló al registrar al usuario");
+        setSuccess("❌ Falló al registrar el usuario");
       }
-      setform(initialState);
     } catch (error) {
-      console.log("Error al servidor", error);
-      alert("Fallo al registrar el usuario");
+      console.error("Error al servidor", error);
+      setSuccess("❌ Falló al conectar con el servidor");
     }
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault()
-
-    postData()
+    event.preventDefault();
+    postData();
   };
 
   return (
-    <div className={styles.container}>
-      <h1>Registro de Usuarios</h1>
+    <div className={styles.page}>
+      <div className={styles.container}>
+        <h1>📝 Registro de Usuario</h1>
+        <p className={styles.subtitle}>
+          Completá tus datos para crear una cuenta
+        </p>
+        <hr />
 
-      <form onSubmit={handleSubmit}>
-        {[
-          {
-            label: "Nombre:",
-            name: "name",
-            type: "text",
-          },
-          {
-            label: "Nombre de Usuario:",
-            name: "username",
-            type: "text",
-          },
-          {
-            label: "Contraseña:",
-            name: "password",
-            type: "password",
-          },
-          {
-            label: "Correo electrónico:",
-            name: "email",
-            type: "text",
-          },
-          {
-            label: "Fecha de nacimiento:",
-            name: "birthdate",
-            type: "date",
-          },
-          {
-            label: "Número de Dni:",
-            name: "nDni",
-            type: "text",
-          },
-        ].map(({ label, name, type }) => {
-          return (
+        <form onSubmit={handleSubmit}>
+          {[
+            { label: "Nombre completo", name: "name", type: "text" },
+            { label: "Nombre de usuario", name: "username", type: "text" },
+            { label: "Contraseña", name: "password", type: "password" },
+            { label: "Correo electrónico", name: "email", type: "email" },
+            { label: "Fecha de nacimiento", name: "birthdate", type: "date" },
+            { label: "Número de DNI", name: "nDni", type: "text" },
+          ].map(({ label, name, type }) => (
             <div className={styles.inputGroup} key={name}>
-              <label className={styles.label}>{label}</label>
+              <label htmlFor={name}>{label}</label>
               <input
-                value={form[name]}
+                id={name}
                 name={name}
                 type={type}
+                value={form[name]}
                 onChange={handleChange}
+                placeholder={
+                  type === "text" ? "Escribí aquí..." : undefined
+                }
               />
-              {errors[name] && <span className={styles.error}>{errors[name]}</span>}
+              {errors[name] && (
+                <span className={styles.error}>{errors[name]}</span>
+              )}
             </div>
-          );
-        })}
-        <button className={styles.button}disabled={errors.email} type="submit">Registrar</button>
-      </form>
-      <hr />
+          ))}
+
+          <button
+            className={styles.button}
+            disabled={Object.values(errors).some((err) => err)}
+            type="submit"
+          >
+            Registrarme
+          </button>
+        </form>
+
+        {success && <p className={styles.success}>{success}</p>}
+      </div>
     </div>
-    
-    
   );
 };
-export default register;
+
+export default Register;

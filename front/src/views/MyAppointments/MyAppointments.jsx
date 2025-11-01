@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Appointment from "../../components/Appointment/Appointment";
 import style from "./MyAppointments.module.css";
 import axios from "axios";
@@ -19,30 +19,29 @@ const MyAppointments = () => {
         `http://localhost:3000/users/${userData.id}`
       );
       dispatch(addUserAppointments(response.data.appointments));
-      //  setAppointments(response.data)
     } catch (error) {
       console.error(error);
     }
   };
 
-  // MONTAJE
   useEffect(() => {
     !userData.name ? navigate("/") : fetchData();
   }, []);
 
-
-
   return (
-    <div className={style.container}>
-      <h3>Mis turnos</h3>
-      <Link to="/newAppointment">New Appointment</Link>
+    <div className={style.page}>
+      <div className={style.header}>
+        <h3>Mis Turnos</h3>
+        <Link to="/newAppointment" className={style.btnAdd}>
+          + Nuevo Turno
+        </Link>
+      </div>
 
-      {userAppointments.length ? (
-        userAppointments?.map(({ time, date, status, id, description }) => {
-          return (
-            <div className={style.container}>
+      <div className={style.container}>
+        {userAppointments.length ? (
+          userAppointments.map(({ time, date, status, id, description }) => (
+            <div key={id} className={style.card}>
               <Appointment
-                key={id}
                 time={time}
                 date={date}
                 status={status}
@@ -50,11 +49,11 @@ const MyAppointments = () => {
                 description={description}
               />
             </div>
-          );
-        })
-      ) : (
-        <div>No tienes ningun turno</div>
-      )}
+          ))
+        ) : (
+          <p className={style.noTurnos}>No tienes ningún turno todavía 🗓️</p>
+        )}
+      </div>
     </div>
   );
 };

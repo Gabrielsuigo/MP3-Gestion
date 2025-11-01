@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { isValidTime, isWeekDay } from "../../helpers/validate";
 import axios from "axios";
+import styles from "./NewAppointment.module.css";
 
 const NewAppointment = () => {
   const navigate = useNavigate();
@@ -15,20 +16,15 @@ const NewAppointment = () => {
   };
 
   const [form, setForm] = useState(initialState);
-
   const [errors, setErrors] = useState(initialState);
 
-  // MONTAJE
   useEffect(() => {
-    !userData.name && navigate("/");
-  }, []);
+    if (!userData?.name) navigate("/");
+  }, [userData, navigate]);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setForm({
-      ...form,
-      [name]: value,
-    });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   };
 
   const postData = async () => {
@@ -36,86 +32,85 @@ const NewAppointment = () => {
       const response = await axios.post(
         "http://localhost:3000/appointments/schedule",
         {
-          date: form.date,
-          time: form.time,
-          description: form.description,
+          ...form,
           userId: userData.id,
         }
       );
 
       if (response.status === 201) {
-        alert("El turno se ha solicitado");
+        alert("✅ Turno solicitado correctamente");
         navigate("/appointments");
       } else {
-        alert("El turno no se ha podido solicitar");
+        alert("❌ No se pudo solicitar el turno");
       }
     } catch (error) {
       console.error("Error en el servidor", error);
+      alert("❌ Error al comunicarse con el servidor");
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
     postData();
   };
 
   useEffect(() => {
+    let newErrors = { ...initialState };
     if (form.date && !isWeekDay(form.date)) {
-      setErrors({
-        ...errors,
-        date: "seleccione un dia entre lunes y viernes.",
-      });
-    } else if (form.time && !isValidTime(form.time)) {
-      setErrors({
-        ...errors,
-        time: "seleccione una hora entre las 08:00AM y 17:00PM",
-      });
-    } else {
-      setErrors({ ...errors, time: "", date: "" });
+      newErrors.date = "Seleccione un día entre lunes y viernes.";
     }
+    if (form.time && !isValidTime(form.time)) {
+      newErrors.time = "Seleccione una hora entre las 08:00 y 17:00.";
+    }
+    setErrors(newErrors);
   }, [form]);
 
   return (
-    <div>
-      <h2>Solicitud de turno</h2>
-      <form onSubmit={handleSubmit}>
-        {[
-          {
-            label: "Fecha:",
-            name: "date",
-            type: "date",
-          },
-          {
-            label: "Hora:",
-            name: "time",
-            type: "time",
-          },
-          {
-            label: "Descripción",
-            name: "description",
-            type: "text",
-          },
-        ].map(({ label, name, type }) => {
-          return (
-            <div key={name}>
-              <label>{label}</label>
+    <div className={styles.page}>
+      <div className={styles.container}>
+        <h2>📅 Solicitud de turno</h2>
+        <p className={styles.subtitle}>
+          Completá los datos para agendar tu nuevo turno
+        </p>
+        <hr />
+
+        <form onSubmit={handleSubmit}>
+          {[
+            { label: "Fecha", name: "date", type: "date" },
+            { label: "Hora", name: "time", type: "time" },
+            { label: "Descripción", name: "description", type: "text" },
+          ].map(({ label, name, type }) => (
+            <div className={styles.inputGroup} key={name}>
+              <label htmlFor={name}>{label}</label>
               <input
-                value={form[name]}
+                id={name}
                 name={name}
                 type={type}
+                value={form[name]}
                 onChange={handleChange}
+                placeholder={
+                  type === "text"
+                    ? "Ej: Consulta general, control, etc."
+                    : undefined
+                }
               />
-              {errors[name] && <span>{errors[name]}</span>}
+              {errors[name] && (
+                <span className={styles.error}>{errors[name]}</span>
+              )}
             </div>
-          );
-        })}
+          ))}
 
-        <button type="submit" disabled={errors.date || errors.time}>
-          Solicitar turno
-        </button>
-      </form>
+          <button
+            className={styles.button}
+            type="submit"
+            disabled={errors.date || errors.time}
+          >
+            Solicitar turno
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
+
 export default NewAppointment;
