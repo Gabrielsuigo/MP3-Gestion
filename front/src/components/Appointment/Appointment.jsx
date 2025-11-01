@@ -1,4 +1,4 @@
-// import axios from "axios";
+import axios from "axios";
 import style from "./Appointment.module.css"
 import { useDispatch } from "react-redux";
 import { cancelAppointmentAction } from "../../redux/reducer";
