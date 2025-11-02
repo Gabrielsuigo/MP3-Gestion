@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import styles from "./Navbar.module.css";
 import { logoutUser } from "../../redux/reducer";
 
@@ -8,9 +9,35 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    navigate("/"); // 🔹 Redirige al login
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "¿Cerrar sesión?",
+      text: "Se cerrará tu sesión actual. ¿Querés continuar?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, cerrar sesión",
+      cancelButtonText: "Cancelar",
+      background: "#f9fafb",
+      color: "#111827",
+      customClass: {
+        popup: "swal2-rounded",
+      },
+    });
+
+    if (result.isConfirmed) {
+      dispatch(logoutUser());
+      await Swal.fire({
+        title: "Sesión cerrada",
+        text: "Tu sesión se cerró correctamente.",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        timer: 1800,
+        showConfirmButton: false,
+      });
+      navigate("/");
+    }
   };
 
   return (

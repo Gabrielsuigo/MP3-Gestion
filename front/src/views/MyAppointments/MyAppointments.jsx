@@ -8,7 +8,6 @@ import { addUserAppointments } from "../../redux/reducer";
 
 const MyAppointments = () => {
   const navigate = useNavigate();
-
   const userData = useSelector((state) => state.userActive);
   const userAppointments = useSelector((state) => state.userAppointment);
   const dispatch = useDispatch();
@@ -30,8 +29,11 @@ const MyAppointments = () => {
 
   return (
     <div className={style.page}>
-      <div className={style.header}>
-        <h3>Mis Turnos</h3>
+      <div className={style.headerSection}>
+        <div>
+          <h2 className={style.title}>Panel de Turnos</h2>
+          <p className={style.subtitle}>Gestioná tus citas de forma sencilla</p>
+        </div>
         <Link to="/newAppointment" className={style.btnAdd}>
           + Nuevo Turno
         </Link>
