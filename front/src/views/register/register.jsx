@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { validateRegister } from "../../helpers/validate";
 import axios from "axios";
 import styles from "./Register.module.css";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const initialState = {
     name: "",
     email: "",
@@ -32,8 +35,9 @@ const Register = () => {
       const response = await axios.post("http://localhost:3000/users/register", form);
 
       if (response.status === 201) {
-        setSuccess("✅ Usuario registrado con éxito");
+        setSuccess("✅ Usuario registrado con éxito. Redirigiendo...");
         setForm(initialState);
+        setTimeout(() => navigate("/"), 1500); // 🔹 Redirige al login
       } else {
         setSuccess("❌ Falló al registrar el usuario");
       }
@@ -52,9 +56,7 @@ const Register = () => {
     <div className={styles.page}>
       <div className={styles.container}>
         <h1>📝 Registro de Usuario</h1>
-        <p className={styles.subtitle}>
-          Completá tus datos para crear una cuenta
-        </p>
+        <p className={styles.subtitle}>Completá tus datos para crear una cuenta</p>
         <hr />
 
         <form onSubmit={handleSubmit}>
@@ -74,13 +76,9 @@ const Register = () => {
                 type={type}
                 value={form[name]}
                 onChange={handleChange}
-                placeholder={
-                  type === "text" ? "Escribí aquí..." : undefined
-                }
+                placeholder={type === "text" ? "Escribí aquí..." : undefined}
               />
-              {errors[name] && (
-                <span className={styles.error}>{errors[name]}</span>
-              )}
+              {errors[name] && <span className={styles.error}>{errors[name]}</span>}
             </div>
           ))}
 

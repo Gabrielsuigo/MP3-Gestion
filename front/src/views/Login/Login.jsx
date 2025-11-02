@@ -56,7 +56,9 @@ const Login = () => {
 
   return (
     <div className={styles.page}>
+          <div className={styles.centerBox}>
       <div className={styles.container}>
+
         <h2>Inicio de Sesión</h2>
         <p className={styles.subtitle}>Accedé con tu usuario y contraseña</p>
         <hr />
@@ -79,6 +81,7 @@ const Login = () => {
               {errors[name] && (
                 <span className={styles.error}>{errors[name]}</span>
               )}
+              
             </div>
           ))}
 
@@ -90,6 +93,7 @@ const Login = () => {
             Iniciar sesión
           </button>
         </form>
+        </div>
       </div>
     </div>
   );

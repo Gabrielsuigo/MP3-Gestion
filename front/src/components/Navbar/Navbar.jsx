@@ -1,9 +1,17 @@
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.css";
+import { logoutUser } from "../../redux/reducer";
 
 const Navbar = () => {
   const userData = useSelector((state) => state.userActive);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate("/"); // 🔹 Redirige al login
+  };
 
   return (
     <nav className={styles.navbar}>
@@ -21,11 +29,19 @@ const Navbar = () => {
             <Link to="/appointments">
               <button className={styles.btnPrimary}>Mis turnos</button>
             </Link>
+            <button className={styles.btnSecondary} onClick={handleLogout}>
+              Cerrar sesión
+            </button>
           </>
         ) : (
-          <Link to="/">
-            <button className={styles.btnSecondary}>Iniciar sesión</button>
-          </Link>
+          <>
+            <Link to="/register">
+              <button className={styles.btnSecondary}>Registrarse</button>
+            </Link>
+            <Link to="/">
+              <button className={styles.btnPrimary}>Iniciar sesión</button>
+            </Link>
+          </>
         )}
       </div>
     </nav>

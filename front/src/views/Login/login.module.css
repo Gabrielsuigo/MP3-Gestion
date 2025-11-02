@@ -1,11 +1,31 @@
-.page {
+/* .page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   background: linear-gradient(135deg, #e9eef5, #f4f7fb);
   font-family: "Poppins", sans-serif;
+} */
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e9eef5, #f4f7fb);
+  font-family: "Poppins", sans-serif;
+
+  /* QUITAMOS el centrado general */
+  display: flex;
+  flex-direction: column; /* para que navbar y footer se ubiquen arriba y abajo */
 }
+
+/* Agregamos un contenedor interno solo para el login */
+.centerBox {
+  flex: 1; /* ocupa todo el espacio vertical disponible */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 .container {
   background-color: #ffffff;

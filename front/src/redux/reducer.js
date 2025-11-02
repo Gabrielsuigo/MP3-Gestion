@@ -12,6 +12,12 @@ export const userSlice = createSlice({
       state.userActive = action.payload;
     },
 
+     logoutUser: (state) => {
+      state.userActive = {}; // 🔹 Limpia los datos del usuario
+      state.userAppointment = []; // 🔹 Limpia los turnos
+    },
+
+
     addUserAppointments: (state, action) => {
       state.userAppointment = action.payload;
     },
@@ -27,5 +33,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { addUser, addUserAppointments, cancelAppointmentAction } = userSlice.actions;
+export const { addUser, addUserAppointments, cancelAppointmentAction, logoutUser } = userSlice.actions;
 // export default userSlice.reducer;

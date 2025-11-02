@@ -10,14 +10,17 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   position: sticky;
   top: 0;
+  left: 0;
   z-index: 1000;
+
+  
 }
 
 /* Logo + nombre */
 .logoSection {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .logoLink {
@@ -43,7 +46,8 @@
 .navLinks {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px; /* 🔹 separa los botones */
+  flex-shrink: 0;
 }
 
 .username {
