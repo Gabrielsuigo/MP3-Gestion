@@ -4,7 +4,7 @@ import { validateLogin } from "../../helpers/validate";
 import { addUser } from "../../redux/reducer";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import styles from "./login.module.css";
+import styles from "./Login.module.css";
 
 const Login = () => {
   const navigate = useNavigate();

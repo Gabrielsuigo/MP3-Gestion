@@ -2,18 +2,18 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./views/Home/Home";
 import MyAppointments from "./views/MyAppointments/MyAppointments";
-import Register from "./views/register/register";
-import Login from "./views/Login/Login";
+
+import Login from "./views/login/Login";
 import Navbar from "./components/Navbar/Navbar";
 import NewAppointment from "./views/NewAppointment/NewAppointment";
 import Footer from "./components/Footer/Footer";
+import Register from "./views/register/Register";
 
 function App() {
   return (
     <div className="appContainer">
       <Navbar />
 
-      {/* Contenido principal */}
       <div className="appContent">
         <Routes>
           <Route path="/" element={<Login />} />
